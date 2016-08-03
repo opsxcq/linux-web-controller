@@ -10,6 +10,14 @@ class df(tornado.web.RequestHandler):
         log+=p.stdout.read().strip()
         self.write(log)
 
+class dockerps(tornado.web.RequestHandler):
+    def get(self):
+        print "Requested disk usage information"
+        log=""
+        p=subprocess.Popen("docker ps -a".split(),stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        log+=p.stdout.read().strip()
+        self.write(log)
+
 class ifconfig(tornado.web.RequestHandler):
     def get(self):
         print "Ifconfig"
@@ -21,6 +29,7 @@ class ifconfig(tornado.web.RequestHandler):
 application = tornado.web.Application([
     (r"/df", df),
     (r"/ifconfig", ifconfig),
+    (r"/dockerps", dockerps),
     (r"/(.*)", tornado.web.StaticFileHandler, {"path": ".","default_filename": "index.html"}),
 ])
 
