@@ -12,4 +12,4 @@ Change the commands as you wish (in this version they are hardcoded) and run
 
 `python index.py`
 
-The web interface will open on http://<host>:8080
+The web interface will open on http://host:8080
