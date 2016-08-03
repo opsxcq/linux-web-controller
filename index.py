@@ -30,8 +30,6 @@ class networktest(tornado.web.RequestHandler):
     def get(self):
         print "Requested network test"
         log=""
-        #p=subprocess.Popen("ifconfig".split(),stdout=subprocess.PIPE,stderr=subprocess.PIPE)
-        #log+=p.stdout.read().strip()
         p=subprocess.Popen(["bash","-c","echo default gateway $(route -n | grep -E \"^0.0.0.0\" | awk '{ print $2}')"],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
         log+=p.stdout.read().strip()+'\n'
 
