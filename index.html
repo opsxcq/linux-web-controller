@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Linux Web Controller</title>
+        <script>
+
+function ajax(url, callback) {
+    var xhr;
+
+    if(typeof XMLHttpRequest !== 'undefined') xhr = new XMLHttpRequest();
+    else {
+        var versions = ["MSXML2.XmlHttp.5.0", 
+            "MSXML2.XmlHttp.4.0",
+            "MSXML2.XmlHttp.3.0", 
+            "MSXML2.XmlHttp.2.0",
+                "Microsoft.XmlHttp"]
+
+                    for(var i = 0, len = versions.length; i < len; i++) {
+                        try {
+                            xhr = new ActiveXObject(versions[i]);
+                            break;
+                        }
+                        catch(e){}
+                    }
+    }
+
+    xhr.onreadystatechange = ensureReadiness;
+
+    function ensureReadiness() {
+        if(xhr.readyState < 4) {
+            return;
+        }
+
+        if(xhr.status !== 200) {
+            return;
+        }
+
+        if(xhr.readyState === 4) {
+            callback(xhr);
+        }           
+    }
+
+    xhr.open('GET', url, true);
+    xhr.send('');
+}
+
+
+function execute(cmd) {
+    ajax(cmd, function(response){
+        document.getElementById("state_line").innerText = response.responseText;
+    });
+}
+        </script>
+    </head>
+    <body>
+        <fieldset style="width: 220px;">
+            <legend>Linux Web Control</legend>
+            <button onclick=execute("/df")>Disk Usage</button>
+            <button onclick=execute("/ifconfig")>Network status</button>
+        </fieldset>
+
+        <br/>
+        <label>Last status message:</label>
+        <br/>
+        <pre id="state_line"/></pre>
+    </body>
+</html>
